@@ -1,2 +1,6 @@
 tb_logs
 wandb
+data
+.venv
+models/
+__pycache__/
