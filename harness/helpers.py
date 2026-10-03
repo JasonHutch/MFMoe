@@ -1,49 +1,23 @@
 import torch
+from llm_delusions_annotations.annotator import Annotator
 from harness.dataclasses import FLMessage
-from torch.nn.utils.rnn import pad_sequence
 
-def custom_collate_fn(batch):
-    input_ids = [torch.tensor(item["input_ids"]) for item in batch]
-    attention_mask = [torch.tensor(item["attention_mask"]) for item in batch]
-    labels = [torch.tensor(item["labels"]) for item in batch]
+# Batch function
+# batch is a dict of lists that correspond to each sample {"text":["hello","world]}
+def explode_conversations(batch):
+    output = {"conversation_id":[], "role":[], "content":[]}
+    for cid, messages, t, l in zip(batch["conversation_id"], batch["conversation"], batch["turn"], batch["language"]):
+        # turn individual columns into tuples
+        for msg in messages:
+            output["conversation_id"].append(cid)
+            output["role"].append(msg["role"])
+            output["content"].append(msg["content"])
 
-    # Pads each dimension along a new dim 0 (batch dim)
-    padded_input_ids = pad_sequence(input_ids, padding_value=tokenizer.pad_token_id)
-    padded_attention_mask = pad_sequence(attention_mask, padding_value=0)
-    padded_labels = pad_sequence(labels, padding_value=-100)  # note: -100 must be on tensor
+    return output
 
-    return {
-        "input_ids": padded_input_ids,
-        "attention_mask": padded_attention_mask,
-        "labels": padded_labels,
-    }
-
-# # Map Functions
-# def build_dreaddit_features(sample):
-#     stress = sample["label"]
-#     response = STRESS_SUPPORT_STATEMENT if stress == 1 else GENERAL_SUPPORT_STATEMENT
-#     prompt = f"instruction:{BASE_INSTRUCTION} post:{sample["text"]} response: "
-#
-#     return {"prompt": prompt, "response": response}
-#
-# def build_irf_features(sample):
-#     belong = sample["belong"]
-#     burden = sample["burden"]
-#     post = sample["text"]
-#
-#     if belong == 0 and burden == 0:
-#         target = irf_tuning_statements["0"]
-#
-#     if belong == 1 and burden == 0:
-#         target = irf_tuning_statements["1"]
-#
-#     if belong == 0 and burden == 1:
-#         target = irf_tuning_statements["2"]
-#
-#     if belong == 1 and burden == 1:
-#         target = irf_tuning_statements["3"]
-#
-#     return { "prompt":f"{irf_instruction} {post}", "response": target}
+def score_msg(sample):
+    annotator = Annotator()
+    results = annotator.an
 
 def fed_avg(messages:list[FLMessage]):
     if not messages:
