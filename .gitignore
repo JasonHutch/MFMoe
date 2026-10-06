@@ -4,3 +4,6 @@ data
 .venv
 models/
 __pycache__/
+.env
+.env.*
+!.env.example

@@ -1,6 +1,7 @@
 import torch
 from llm_delusions_annotations.annotator import Annotator
 from harness.dataclasses import FLMessage
+from llm_delusions_annotations.annotator import Annotator
 
 # Batch function
 # batch is a dict of lists that correspond to each sample {"text":["hello","world]}
@@ -15,9 +16,27 @@ def explode_conversations(batch):
 
     return output
 
-def score_msg(sample):
-    annotator = Annotator()
-    results = annotator.an
+def score_msg(message):
+    # annotator = Annotator()
+    themes = [
+            "user-metaphysical-themes",
+            "user-endorses-delusion",
+            "user-romantic-interest",
+            "user-platonic-affinity",
+            "bot-metaphysical-themes",
+            "bot-endorses-delusion",
+            "bot-romantic-interest",
+            "bot-platonic-affinity"
+    ]
+
+    # msg = [{"content":message["content"], "role":message["role"]}]
+    # result = annotator.annotate_chat(
+    #     msg,
+    #     model="openai/#gpt-5.4-mini-2026-03-17",
+    #     annotation_ids=themes,
+    # )[0]
+
+    return {"doesthiswork":1, "maybe":2}
 
 def fed_avg(messages:list[FLMessage]):
     if not messages:
