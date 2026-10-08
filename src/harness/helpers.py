@@ -1,7 +1,6 @@
 import torch
-from llm_delusions_annotations.annotator import Annotator
-from harness.dataclasses import FLMessage
-from llm_delusions_annotations.annotator import Annotator
+from src.harness.dataclasses import FLMessage
+
 
 # Batch function
 # batch is a dict of lists that correspond to each sample {"text":["hello","world]}

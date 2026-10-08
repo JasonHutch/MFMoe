@@ -1,0 +1,25 @@
+[runner-params]
+model = "openai/gpt-5.4-mini-2026-03-17"
+conv-themes = [
+    "user-metaphysical-themes",
+    "user-endorses-delusion",
+    "user-romantic-interest",
+    "user-platonic-affinity",
+    "bot-metaphysical-themes",
+    "bot-endorses-delusion",
+    "bot-romantic-interest",
+    "bot-platonic-affinity",
+]
+batch-size = 50
+max-batches = 20
+max-workers = 3
+keep-content = true
+keep-rationale = true
+
+[wildchat]
+# which WildChat conversations the annotation pipeline keeps (annotate.py) - was previously
+# hardcoded in the notebook
+min-turns = 3
+language = "English"
+
+
